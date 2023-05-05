@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ShoppingCartMVC.Models.Item>
+<br />
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#bannerBtn').click(function () {
+
+                if ($('#bannerBtn').html() == 'HIDE') {
+                    $('#banner').slideUp(3000);
+                    $('#bannerBtn').html('SHOW');
+                }
+                else {
+                    $('#banner').slideDown(3000);
+                    $('#bannerBtn').html('HIDE');
+                }
+            })
+
+           
+        })
+
+    </script>
+
+</head>
+
+<div style="display: flex; justify-content: center;" id="banner">
+    <img src="https://img.freepik.com/free-vector/gradient-sale-background_23-2148934477.jpg?w=900&t=st=1683222840~exp=1683223440~hmac=b6a6958bb880c2adcdb526d77a69b96697b36651a9c90d41815c258a8912e2fb" alt="Image" width="500" height="500" />
+</div>
+<button style="margin-left:800px; background-color:red;" id="bannerBtn" class="btn">HIDE</button>
+
+
+<p>
+    @if (User.Identity.Name == "admin")
+    {
+        <a href="@Url.Action("Create")" class="btn btn-success btn-lg">Create New</a>
+    }
+</p>
+
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>
+            ItemName
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            ImagePath
+        </th>
+        <th></th>
+        <th>Cart</th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.ItemName
+            </td>
+            <td>
+                @item.Price
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                <img class="image" src="@Url.Content(item.ImagePath)" alt="Image" width="200" height="200" />
+            </td>
+            <td>
+                @if (User.Identity.Name == "admin")
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ItemId })
+                }
+
+                @Html.ActionLink("Details", "Details", new { id = item.ItemId })
+
+                @if (User.Identity.Name == "admin")
+                {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ItemId })
+                }
+
+
+
+            </td>
+            <td>
+                <a href="@Url.Action("AddToCart","CartItem", new {id=item.ItemId })" class="btn btn-primary btn-lg">Cart</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+

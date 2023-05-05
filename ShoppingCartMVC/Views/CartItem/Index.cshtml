@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ShoppingCartMVC.Models.CartItem>
+
+
+<table class="table">
+    <tr>
+        <th>
+            ItemName
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th></th>
+        <th></th>
+
+        @if (User.Identity.Name=="admin")
+        {
+            <th>User</th>
+        }
+        
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Item.ItemName
+            </td>
+            <td>
+                <img src="@Url.Content(item.Item.ImagePath)" alt="Image" width="200" height="200" />
+            </td>
+            <td>
+                @item.Quantity
+            </td>
+            <td>
+                @Html.ActionLink("+", "Increase", "CartItem", new { id = item.ItemId }, null)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", "CartItem", new { id = item.CartItemId }, null)
+            </td>
+            @if (User.Identity.Name == "admin")
+            {
+                <td>
+                    @item.CartId
+                </td>
+            }
+
+        </tr>
+    }
+
+</table>
+
+@Html.ActionLink("CheckOut", "CheckOut", "CartItem", new { }, null)
